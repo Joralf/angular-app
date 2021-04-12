@@ -1,25 +1,32 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-
+import { render, screen, fireEvent } from '@testing-library/angular';
 import { CounterComponent } from './counter.component';
 
-describe('CounterComponent', () => {
-  let component: CounterComponent;
-  let fixture: ComponentFixture<CounterComponent>;
+describe('Counter', () => {
+  test('should render counter', async () => {
+    await render(CounterComponent, {
+      componentProperties: { count: 5 },
+    });
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      declarations: [ CounterComponent ]
-    })
-    .compileComponents();
+    expect(screen.getByText('Current Count: 5'));
   });
 
-  beforeEach(() => {
-    fixture = TestBed.createComponent(CounterComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
+  test('should increment the counter on click', async () => {
+    await render(CounterComponent, {
+      componentProperties: { count: 5 },
+    });
+
+    fireEvent.click(screen.getByText('Increment'));
+
+    expect(screen.getByText('Current Count: 6'));
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
+  test('should decrement the counter on click', async () => {
+    await render(CounterComponent, {
+      componentProperties: { count: 5 },
+    });
+
+    fireEvent.click(screen.getByText('Decrement'));
+
+    expect(screen.getByText('Current Count: 4'));
   });
 });
